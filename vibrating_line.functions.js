@@ -1,11 +1,14 @@
 // function for parabola
-function f(x, correction)
+function f(x, a)
 {
-   var a = -50; // diese Variable ändern, um Schwingung zu verursachen
-   var b = -WIDTH / 2;
-   var c = 22500; // no idea why until now, but it works
-   console.log(1/22500);
-   return (a/c) * Math.pow(x + b, 2) - a;
+   // a being the y position of the cursor
+   var c = 22500; // the correct c depends on how big the frame is, it makes the parabola so that it has the zero points at the right coordinates
+   return (a/c) * Math.pow(x - WIDTH / 2, 2) - (a - HEIGHT / 2);
 
    // Stauchung * Vertikalverschiebung^2 + Horizintalverschiebung
+}
+
+var cursorPassed0 = function(mouseY)
+{
+   
 }
