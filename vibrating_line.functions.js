@@ -8,7 +8,11 @@ function f(x, a)
    // Stauchung * Vertikalverschiebung^2 + Horizintalverschiebung
 }
 
-var cursorPassed0 = function(mouseY)
+var parabola =
 {
-   
+   held: true,
+   letLoose: function()
+   {
+      parabola.held = false;
+   }   
 }
