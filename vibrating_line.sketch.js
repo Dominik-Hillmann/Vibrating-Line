@@ -14,7 +14,7 @@ var force = 0;*/
 function setup()
 {
    createCanvas(HEIGHT, WIDTH);
-   var cursor = new Cursor(mouseY, null);
+   var cursor = new Cursor(WIDTH / 2, WIDTH / 2);
 }
 
 function draw()
@@ -23,15 +23,21 @@ function draw()
    stroke(255, 255, 255);
 
    // Lösung zum Wechsel der Anvisierung Bildmitte vs Cursor: nicht die aktuelle Pos verändern, sondern das Ziel, das anfangs die Kraft berechnet
+   cursor.last = cursor.now;
+   cursor.now = mouseY; // das noch in eine Update-Methode
+
+   parabola.checkCursor(cursor);
+
+   // parabola.checkCursor(cursor);
    parabola.computeForce();
    parabola.draw();
 
    fill(255, 255, 255);
    text("" + frameCount, 10, 10);
-   /*if(frameCount == 150)
-      parabola.held = false;*/
-   cursor.last = cursor.now;
-   cursor.now = mouseY;
+
+
+
+
    if(frameCount < 151 && (frameCount % 2) === 0)
       console.log("Now: " + cursor.now + ", Past: " + cursor.last + ", frame: " + frameCount);
 
