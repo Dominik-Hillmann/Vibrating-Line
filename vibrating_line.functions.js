@@ -5,16 +5,13 @@ var Cursor = function(newPos, lastPos)
 
    this.update = () =>
    {
-      if((frameCount % 2) === 0)
-      {
-         this.last = this.now;
-         this.now = mouseY;
-      }
+      this.last = this.now;
+      this.now = mouseY;
    }
 }
 
 // constructor for a parabola
-var Parabola = function(drag, strength, restingLineY)
+var Parabola = function(drag, strength, restingLineY, toleranceAbove, toleranceBelow)
 {
    this.held = false;
    // vars for calculation of movement
@@ -25,6 +22,8 @@ var Parabola = function(drag, strength, restingLineY)
    this.position = 0;
    // y position of straight line when resting
    this.restingLineY = restingLineY;
+   this.toleranceAbove = toleranceAbove;
+   this.toleranceBelow = toleranceBelow;
 
    // parabola function
    this.f = (x, highpoint) =>
@@ -36,10 +35,10 @@ var Parabola = function(drag, strength, restingLineY)
    }
 
    // changes values so that if drawn with the values via f(x) it looks natural
-   this.computeForce = () => // arrow because this function would create new reference to "this"
+   this.computeForce = (inCursor) => // arrow because this function would create new reference to "this"
    {
       if(this.held)
-         this.force = mouseY - this.position; // line wants to go to y position of the cursor
+         this.force = inCursor.now - this.position; // line wants to go to y position of the cursor
       else
          this.force = this.restingLineY - this.position; // now the line wants to go to its resting position
 
@@ -54,52 +53,31 @@ var Parabola = function(drag, strength, restingLineY)
    // draws the parabola according to f(x) and  whether it is held or not
    this.draw = () =>
    {
-      //if(this.held)
-      //{
-         for(var x = 0; x < WIDTH; x++)
-         {
-            line
-            (
-               // x position, f(x position, compression of parabola determined by cursor's position)
-               x - 1, this.f(x - 1, -this.position + this.restingLineY),
-               x, this.f(x, -this.position + this.restingLineY)
-            );
-         }
-      //}
-      //else
-      //{
-      //   for(var x = 0; x < WIDTH; x++)
-      //   {
-      //      line
-      //      (
-               // x position, f(x position, compression of parabola determined by cursor's position)
-      //         x - 1, this.f(x - 1, -this.position/* + this.restingLineY*/),
-      //         x, this.f(x, -this.position/* + this.restingLineY*/)
-      //      );
-      //   }
-      //}
+      for(var x = 0; x < WIDTH; x++)
+      {
+         line
+         (
+            // x position, f(x position, compression of parabola determined by cursor's position)
+            x - 1, this.f(x - 1, -this.position + this.restingLineY),
+            x, this.f(x, -this.position + this.restingLineY)
+         );
+      }
    }
 
-   // checks whether cursor came across resting line via checking the cursor object
-   // and if it crosses the line, it will be attached to the cursor by changing this.held to true
-   /*this.checkCursor = (cursorObj) =>
+   this.checkCursor = (inCursor) =>
    {
-      if((cursorObj.last <= this.restingLineY) && (cursorObj.now >= this.restingLineY))
-         this.held = true;
-   }*/
-
-   this.checkCursor = (cursor) =>
-   {
-      //console.log(cursor.last > this.restingLineY, cursor.now <= this.restingLineY);
-      if(!this.held) // catching the line if not already held
+      // catching the line if not already held
+      if((!this.held) && (inCursor.last != 0)) // why "!= 0"? Because value has value 0 if it was not already moved while it was running --> avoiding glitches
       {
-         if((cursor.last > this.restingLineY) && (cursor.now < this.restingLineY)) // cursor coming from below
+         // cursor was below and moves above the line
+         if((inCursor.last > this.restingLineY) && (inCursor.now <= this.restingLineY))
             this.held = true;
-         else if((cursor.last < this.restingLineY) && (cursor.now > this.restingLineY))
-         {
+         // cursor was above and moves below the line
+         if((inCursor.last < this.restingLineY) && (inCursor.now >= this.restingLineY))
             this.held = true;
-            console.log((cursor.last < this.restingLineY), (cursor.now > this.restingLineY));
-         }
       }
+      // cursor goes further above/below than tolerated
+      else if(this.held && ((inCursor.now - this.restingLineY) > this.toleranceBelow)) /*|| (inCursor.now - this.restingLineY) > this.toleranceAbove)*/
+         this.held = false;
    }
 }
