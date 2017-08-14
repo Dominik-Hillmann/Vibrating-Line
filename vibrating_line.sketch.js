@@ -16,7 +16,7 @@ function setup()
 {
    createCanvas(HEIGHT, WIDTH);
    cursor = new Cursor(WIDTH / 2, WIDTH / 2);
-   parabola = new Parabola(0.75, 0.1, (WIDTH / 2), 0, 500);// SPÄTER PARAMETER FÜR POSITION
+   parabola = new Parabola(0.75, 0.1, (WIDTH / 2), 100, 500);// SPÄTER PARAMETER FÜR POSITION
 }
 
 function draw()

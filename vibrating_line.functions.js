@@ -77,7 +77,8 @@ var Parabola = function(drag, strength, restingLineY, toleranceAbove, toleranceB
             this.held = true;
       }
       // cursor goes further above/below than tolerated
-      else if(this.held && ((inCursor.now - this.restingLineY) > this.toleranceBelow)) /*|| (inCursor.now - this.restingLineY) > this.toleranceAbove)*/
+      else if(this.held && (((this.restingLineY - inCursor.now) > this.toleranceAbove)) ||
+                            ((this.restingLineY - inCursor.now) < -this.toleranceBelow))
          this.held = false;
    }
 }
