@@ -1,22 +1,31 @@
-const WIDTH = 300;
 const HEIGHT = 300;
+const WIDTH = 600;
+const NUM_PARABOLAS = 5;
+
 var parabola;
+var parabolas = [];
 var cursor;
+var c;
 // random Zahl, aber der Parabel zurückspringt
 // nach Anzahl gleichmäßig verteilen an HEIGHT oder WIDTH
 
-/*
-var drag = 0.75; // what gets taken away every frame from the velocity
-var strength = 0.1; // wie viel Einwirkung die durch Abstand entstandende Kraft hat
-var velocity = 0;
-var position = 0;
-var force = 0;*/
-
 function setup()
 {
+   /*for(i = 0; i < 1000000; i++)
+   {
+      if( )
+         c = i;
+   }*/
+   // danach Verteilung entlang der Höhe
    createCanvas(HEIGHT, WIDTH);
+
+   for(var y = (HEIGHT / NUM_PARABOLAS); y < HEIGHT; y += (HEIGHT / NUM_PARABOLAS))
+      parabolas.push(new Parabola(0.75, 0.1, y, 200, 200));
+
    cursor = new Cursor(WIDTH / 2, WIDTH / 2);
-   parabola = new Parabola(0.75, 0.1, (WIDTH / 2), 100, 500);// SPÄTER PARAMETER FÜR POSITION
+   //parabola = new Parabola(0.75, 0.1, (WIDTH / 2), 100, 500);// SPÄTER PARAMETER FÜR POSITION
+   for(var i = 0; i < parabolas.length; i++)
+      console.log(parabolas[i]);
 }
 
 function draw()
@@ -24,34 +33,23 @@ function draw()
    background(0, 0, 0);
    stroke(255, 255, 255);
 
-   // Lösung zum Wechsel der Anvisierung Bildmitte vs Cursor: nicht die aktuelle Pos verändern, sondern das Ziel, das anfangs die Kraft berechnet
-   //cursor.last = cursor.now;
-   //cursor.now = mouseY; // das noch in eine Update-Methode
    cursor.update();
-
-   parabola.checkCursor(cursor);
+   for(var i = 0; i < parabolas.length; i++)
+   {
+      parabolas[i].checkCursor(cursor);
+      parabolas[i].computeForce(cursor);
+      parabolas[i].draw();
+   }
+   //parabola.checkCursor(cursor);
 
    // parabola.checkCursor(cursor);
-   parabola.computeForce(cursor);
-   parabola.draw();
+   //parabola.computeForce(cursor);
+   //parabola.draw();
 
    fill(255, 255, 255);
    text(frameCount, 10, 10);
-   // point(100, 100);
-
-
-
-
-   //if(frameCount < 151 && (frameCount % 2) === 0)
-      //console.log(", Past: " + cursor.last + " Now: " + cursor.now + ", frame: " + frameCount + " line: " + parabola.restingLineY);
 
    // späteres Testen, ob cursor über Linie geht
       // Objekt, das Pos aus letzter Loop speichert
       // wenn letzt kleiner oder größer und wenn jetziger
-
-
-
-   /*// red line to see where the middle is
-   stroke(255, 0, 0);
-   line(0, HEIGHT / 2, WIDTH, HEIGHT / 2);*/
 }

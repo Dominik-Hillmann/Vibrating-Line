@@ -1,3 +1,4 @@
+// cursor constructor whose instance knows the current pos and the pos of one frame ago
 var Cursor = function(newPos, lastPos)
 {
    this.last = lastPos;
@@ -29,7 +30,8 @@ var Parabola = function(drag, strength, restingLineY, toleranceAbove, toleranceB
    this.f = (x, highpoint) =>
    {
       var c = 22500; // the correct c depends on how big the frame is, it makes the parabola so that it has the zero points at the right coordinates
-      return (highpoint / c) * Math.pow(x - (WIDTH / 2), 2) - (highpoint - (HEIGHT / 2));
+      //return (highpoint / c) * Math.pow(x - (HEIGHT / 2), 2) - (highpoint - (WIDTH / 2));
+      return (highpoint / c) * Math.pow(x - (WIDTH / 2), 2) - (highpoint - this.restingLineY);
 
       // Stauchung * Vertikalverschiebung^2 + Horizintalverschiebung
    }
