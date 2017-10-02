@@ -1,8 +1,9 @@
 const WIDTH = 300;
 const HEIGHT = 600;
-const NUM_PARABOLAS = 1;
+const NUM_PARABOLAS = 25;
 
 var parabola;
+var parabola2;
 var parabolas = [];
 var cursor;
 var c;
@@ -11,16 +12,18 @@ var c;
 
 function setup()
 {
-   /*for(i = 0; i < 1000000; i++)
-   {
-      if( )
-         c = i;
-   }*/
-   // danach Verteilung entlang der Höhe
    createCanvas(WIDTH, HEIGHT);
 
+   var heightSetter = HEIGHT / 2;
+   for(var i = 0; i < NUM_PARABOLAS; i++)
+   {
+      parabolas.push(new Parabola(0.75, 0.1, heightSetter, 250, 250));
+      heightSetter += 10;
+   }
+
    cursor = new Cursor(WIDTH / 2, WIDTH / 2);
-   parabola = new Parabola(0.75, 0.1, (WIDTH / 2), 250, 250);// SPÄTER PARAMETER FÜR POSITION
+   // parabola = new Parabola(0.75, 0.1, (HEIGHT / 2), 250, 250);// SPÄTER PARAMETER FÜR POSITION
+   // parabola2 = new Parabola(0.75, 0.1, ((HEIGHT / 2) - 50), 250, 250);
 }
 
 function draw()
@@ -29,20 +32,25 @@ function draw()
    stroke(255, 255, 255);
 
    cursor.update();
-   /*for(var i = 0; i < parabolas.length; i++)
+
+   for(var i = 0; i < NUM_PARABOLAS; i++)
    {
       parabolas[i].checkCursor(cursor);
       parabolas[i].computeForce(cursor);
       parabolas[i].draw();
-   }*/
-
+   }
+/*
    parabola.checkCursor(cursor);
    parabola.computeForce(cursor);
    parabola.draw();
 
+   parabola2.checkCursor(cursor);
+   parabola2.computeForce(cursor);
+   parabola2.draw();
+
    fill(255, 255, 255);
    text(frameCount, 10, 10);
-
+   */
    // späteres Testen, ob cursor über Linie geht
       // Objekt, das Pos aus letzter Loop speichert
       // wenn letzt kleiner oder größer und wenn jetziger
