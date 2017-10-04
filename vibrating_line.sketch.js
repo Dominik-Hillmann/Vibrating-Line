@@ -1,10 +1,11 @@
 const WIDTH = 300;
-const HEIGHT = 600; // IMPORTANT: use even number!
-const NUM_PARABOLAS = 15;
+const HEIGHT = 300; // IMPORTANT: use even number!
+const NUM_PARABOLAS = 10;
 
 var parabola;
 var parabola2;
 var parabolas = [];
+var vertParabolas = [];
 var cursor;
 var c;
 // random Zahl, aber der Parabel zurückspringt
@@ -13,31 +14,50 @@ var c;
 function setup()
 {
    createCanvas(WIDTH, HEIGHT);
-   cursor = new Cursor(WIDTH / 2, WIDTH / 2);
+   //cursor = new Cursor(WIDTH / 2, WIDTH / 2);
+   cursor = new Cursor(HEIGHT / 2, HEIGHT / 2, WIDTH / 2, WIDTH / 2);
 
       // Schritt 1: ersten Durchlauf richtig setzen: getan
-   var heightSetter;
+   var heightWidthSetter;
    var evenNum = (NUM_PARABOLAS % 2) == 0;
    if(evenNum)
-      heightSetter = 5;
+      heightWidthSetter = 5;
    else
-      heightSetter = 0;
+      heightWidthSetter = 0;
 
    for(var i = 0; i < NUM_PARABOLAS; i++)
    {
-      parabolas.push(new Parabola(0.75, 0.1, (HEIGHT / 2) + heightSetter, 200, 200));
+      parabolas.push(new Parabola(0.75, 0.1, (HEIGHT / 2) + heightWidthSetter, 75, 75));
 
       // in the case of an even NUM_PARABOLAS, I want on both sode of HEIGHT / 2 the same number of lines
-      heightSetter *= -1;
+      heightWidthSetter *= -1;
       if(evenNum)
       {
          if((i + 1) % 2 == 0)
-            heightSetter += 10;
+            heightWidthSetter += 10;
       }
       else // if uneven NUM_PARABOLAS, one line in the middle
       {
          if((i + 1) % 2 != 0)
-            heightSetter += 10;
+            heightWidthSetter += 10;
+      }
+   }
+
+
+   // loop for vertical parabolas
+   for(var i = 0; i < NUM_PARABOLAS; i++)
+   {
+      vertParabolas.push(new VerticalParabola(0.75, 0.1, (WIDTH / 2) + heightWidthSetter, 75, 75));
+      heightWidthSetter *= -1;
+      if(evenNum)
+      {
+         if((i + 1) % 2 == 0)
+            heightWidthSetter += 10;
+      }
+      else // if uneven NUM_PARABOLAS, one line in the middle
+      {
+         if((i + 1) % 2 != 0)
+            heightWidthSetter += 10;
       }
    }
 
@@ -63,7 +83,6 @@ function draw()
 {
    background(0, 0, 0);
    stroke(255, 255, 255);
-
    cursor.update();
 
    for(var i = 0; i < NUM_PARABOLAS; i++)
@@ -73,28 +92,22 @@ function draw()
       parabolas[i].draw();
    }
 
+   // loop for vartical parabolas
+   for(var i = 0; i < NUM_PARABOLAS; i++)
+   {
+      vertParabolas[i].checkCursor(cursor);
+      vertParabolas[i].computeForce(cursor);
+      vertParabolas[i].draw(); // HIER PROBLEM: WIRD NICHT GEZEICHNET
+   }
+
    // drawing red middle line to test
    stroke(255, 0, 0);
    line(0, HEIGHT / 2, WIDTH, HEIGHT/ 2);
-/*
-   parabola.checkCursor(cursor);
-   parabola.computeForce(cursor);
-   parabola.draw();
-
-   parabola2.checkCursor(cursor);
-   parabola2.computeForce(cursor);
-   parabola2.draw();
-
-   fill(255, 255, 255);
-   text(frameCount, 10, 10);
-   */
-   // späteres Testen, ob cursor über Linie geht
-      // Objekt, das Pos aus letzter Loop speichert
-      // wenn letzt kleiner oder größer und wenn jetziger
+   line(WIDTH / 2, 0, WIDTH /2, WIDTH);
 }
 /*
 TODO:
 - Schieberegler für drag und strength
-- Auswahlmenü für die Anzahl der Linien
-
+- Cs für größere Fenster herausfinden und diese als Auswahl einbauen
+- vertikale Linien
 */
