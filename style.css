@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+label {
+   font-family: 'Source Sans Pro', sans-serif;
+   color: white;
+   margin-left: 5px;
+}
+
+body {
+   background-color: #1f2228;
+}
+
+body div {
+   margin-top: 10px;
+}
+
+#sketch-holder {
+   border: 10px white;/*#B64D49;*/
+}

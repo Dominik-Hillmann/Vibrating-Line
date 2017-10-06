@@ -2,7 +2,7 @@
 <html>
    <head>
       <meta charset="utf-8">
-      <title>Vibrating Line in p5.js</title>
+      <title>Vibrating Lines</title>
       <!-- LIBRARIES -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.min.js"></script>
@@ -16,5 +16,10 @@
       <style> body {padding: 0; margin: 0;} </style>
    </head>
    <body>
+      <div>
+         <div id="sketch-holder"></div>
+         <input type="checkbox" name="vertLines" id="vertical"><label for="vertical">Vertical Lines</label><br>
+         <input type="checkbox" name="horiLines" id="horizontal" checked><label for="horizontal">Horizontal Lines</label>
+      </div>
    </body>
 </html>

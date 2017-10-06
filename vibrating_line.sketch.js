@@ -1,18 +1,15 @@
 const WIDTH = 300;
 const HEIGHT = 300; // IMPORTANT: use even number!
-const NUM_PARABOLAS = 10;
+const NUM_PARABOLAS = 10; // each, vertically, and horizontally
 
-var parabola;
 var horiParabolas = [];
 var vertParabolas = [];
 var cursor;
 
-// random Zahl, aber der Parabel zurückspringt
-// nach Anzahl gleichmäßig verteilen an HEIGHT oder WIDTH
-
 function setup()
 {
-   createCanvas(WIDTH, HEIGHT);
+   var canvas = createCanvas(WIDTH, HEIGHT);
+   canvas.parent("sketch-holder");
    cursor = new Cursor(HEIGHT / 2, HEIGHT / 2, WIDTH / 2, WIDTH / 2);
 
    var heightWidthSetter = evenNum();
@@ -60,19 +57,25 @@ function draw()
    cursor.update();
 
    // loop horizontal parabolas
-   for(var i = 0; i < NUM_PARABOLAS; i++)
+   if(document.getElementById("horizontal").checked)
    {
-      horiParabolas[i].checkCursor(cursor);
-      horiParabolas[i].computeForce(cursor);
-      horiParabolas[i].draw();
+      for(var i = 0; i < NUM_PARABOLAS; i++)
+      {
+         horiParabolas[i].checkCursor(cursor);
+         horiParabolas[i].computeForce(cursor);
+         horiParabolas[i].draw();
+      }
    }
 
    // loop for vartical parabolas
-   for(var i = 0; i < NUM_PARABOLAS; i++)
+   if(document.getElementById("vertical").checked)
    {
-      vertParabolas[i].checkCursor(cursor);
-      vertParabolas[i].computeForce(cursor);
-      vertParabolas[i].draw();
+      for(var i = 0; i < NUM_PARABOLAS; i++)
+      {
+         vertParabolas[i].checkCursor(cursor);
+         vertParabolas[i].computeForce(cursor);
+         vertParabolas[i].draw();
+      }
    }
 }
 
@@ -82,8 +85,8 @@ TODO:
    - Methode für geänderten Drag und Strength, die das entsprechend OHNE Konstruktor tut
 - Cs für größere Fenster herausfinden und diese als Auswahl einbauen
 - vertikale Linien XXX
-   - für an-/ausschalten ein Häkchen, dann if um die Auswertungsfunktionen in .draw
-   - dieses Häkchen wird direkt davor durch DOM abgerufen
+   - für an-/ausschalten ein Häkchen, dann if um die Auswertungsfunktionen in .draw XXX
+   - dieses Häkchen wird direkt davor durch DOM abgerufen XXX
 - index.html verschönern
    - Canvas vergrößern und in die Mitte schieben
    - Schaltbuttons
