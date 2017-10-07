@@ -14,7 +14,7 @@ var Cursor = function(newPosY, newPosX, lastPosY, lastPosX)
       y : newPosY,
    };
    // Update: last position is current position and current position is current poisition of cursor
-   this. update = () =>
+   this.update = () =>
    {
       this.last.x = this.now.x;
       this.last.y = this.now.y;
@@ -95,6 +95,13 @@ var HorizontalParabola = function(drag, strength, restingLineY, toleranceAbove, 
                             ((this.restingLineY - inCursor.now.y) < -this.toleranceBelow))
          this.held = false;
    }
+
+   // a method that can change drag and strength
+   this.changeParameters = (newDrag, newStrength) =>
+   {
+      this.drag = newDrag;
+      this.strength = newStrength;
+   }
 }
 
 
@@ -160,10 +167,24 @@ var VerticalParabola = function(drag, strength, restingLineX, toleranceLeft, tol
          if((inCursor.last.x < this.restingLineX) && (inCursor.now.x >= this.restingLineX))
             this.held = true;
       }
-      // cursor goes further above/below than tolerated
+      // cursor goes further left/right than tolerated
       else if(this.held && (((this.restingLineX - inCursor.now.x) > this.toleranceRight)) ||
                             ((this.restingLineX - inCursor.now.x) < -this.toleranceLeft))
          this.held = false;
+   }
+}
+
+// constructor for an object that can remember its own past value
+var MemoryValue = function(current, past, referenceInDOM)
+{
+   this.past = past;
+   this.current = current;
+   this.reference = referenceInDOM; // so there does not have to be again and again document.getElementById(...
+   this.update = () =>
+   {
+      this.past = this.current;
+      this.current = parseInt(this.reference.options[this.reference.selectedIndex].value);
+      console.log(this.current, this.past); // XXX
    }
 }
 
