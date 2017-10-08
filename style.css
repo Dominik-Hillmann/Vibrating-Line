@@ -10,15 +10,19 @@ body {
    background-color: #1f2228;
    padding: 0;
    margin: 0;
+   width: 100%;
 }
 
 body div {
    margin-top: 20px;
    margin-left: 10px;
+   display: block;
+   width: 100%;
 }
 
-input {
+input, select {
    margin-left: 10px;
+   margin-bottom: 2px;
 }
 
 #sketch-holder {

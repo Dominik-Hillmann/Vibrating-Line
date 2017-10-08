@@ -35,6 +35,7 @@ var HorizontalParabola = function(drag, strength, restingLineY, toleranceAbove, 
    this.position = 0;
    // y position of straight line when resting
    this.restingLineY = restingLineY;
+   // if cursor exceeds these limits, the parabola "wants" to go back to its resting postion this.restingLineY
    this.toleranceAbove = toleranceAbove;
    this.toleranceBelow = toleranceBelow;
 
@@ -42,13 +43,11 @@ var HorizontalParabola = function(drag, strength, restingLineY, toleranceAbove, 
    this.f = (x, highpoint) =>
    {
       var c = 22500; // the correct c depends on how big the frame is, it makes the parabola so that it has the zero points at the right coordinates
-      //return (highpoint / c) * Math.pow(x - (HEIGHT / 2), 2) - (highpoint - (WIDTH / 2));
       return (highpoint / c) * Math.pow(x - (WIDTH / 2), 2) - (highpoint - this.restingLineY);
-
       // Stauchung * Vertikalverschiebung^2 + Horizintalverschiebung
    }
 
-   // changes values so that if drawn with the values via f(x) it looks natural
+   // changes values so that if drawn with the values via f(x), the movement looks natural given the right parameters
    this.computeForce = (inCursor) => // arrow because this function would create new reference to "this"
    {
       if(this.held)
@@ -57,23 +56,23 @@ var HorizontalParabola = function(drag, strength, restingLineY, toleranceAbove, 
          this.force = this.restingLineY - this.position; // now the line wants to go to its resting position
 
       this.force *= this.strength;
-      // ursprüngliche Kraft ist potenzielle Energie als Differenz gewollte Pos - aktuelle Pos
-      // die entstandende Kraft wird je nach dem, wie stark Feder, abgeschwächt
-      this.velocity *= this.drag; // derzeitige Geschwindigkeit abgeschwächt durch Reibung
+      // urspruengliche Kraft ist potenzielle Energie als Differenz: gewollte Pos - aktuelle Pos
+      // die entstandende Kraft wird je nach dem, wie stark Feder, abgeschwaecht
+      this.velocity *= this.drag; // derzeitige Geschwindigkeit abgeschwaecht durch Reibung
       this.velocity += this.force; // zur Geschwindigkeit kommt die Kraft durch aktuelle Pos
-      this.position += this.velocity; // diese Geschwindigkeit (= Ortsveränderung in geg. Zeitspanne) wird zur Pos addiert
+      this.position += this.velocity; // diese Geschwindigkeit (= Ortsveraenderung in geg. Zeitspanne) wird zur Pos addiert
    }
 
    // draws the parabola according to f(x) and  whether it is held or not
+   // works by drawing a line between every neighbouring point of the function so that if extended, no dots with voids in between will appear
    this.draw = () =>
    {
       for(var x = 0; x < WIDTH; x++)
       {
          line
          (
-            // x position, f(x position, compression of parabola determined by cursor's position)
-            x - 1, this.f(x - 1, -this.position + this.restingLineY),
-            x, this.f(x, -this.position + this.restingLineY)
+            x - 1, this.f(x - 1, -this.position + this.restingLineY), // (x,y) of starting point
+            x, this.f(x, -this.position + this.restingLineY) // (x,y) of end point
          );
       }
    }
@@ -94,13 +93,6 @@ var HorizontalParabola = function(drag, strength, restingLineY, toleranceAbove, 
       else if(this.held && (((this.restingLineY - inCursor.now.y) > this.toleranceAbove)) ||
                             ((this.restingLineY - inCursor.now.y) < -this.toleranceBelow))
          this.held = false;
-   }
-
-   // a method that can change drag and strength
-   this.changeParameters = (newDrag, newStrength) =>
-   {
-      this.drag = newDrag;
-      this.strength = newStrength;
    }
 }
 
@@ -171,20 +163,6 @@ var VerticalParabola = function(drag, strength, restingLineX, toleranceLeft, tol
       else if(this.held && (((this.restingLineX - inCursor.now.x) > this.toleranceRight)) ||
                             ((this.restingLineX - inCursor.now.x) < -this.toleranceLeft))
          this.held = false;
-   }
-}
-
-// constructor for an object that can remember its own past value
-var MemoryValue = function(current, past, referenceInDOM)
-{
-   this.past = past;
-   this.current = current;
-   this.reference = referenceInDOM; // so there does not have to be again and again document.getElementById(...
-   this.update = () =>
-   {
-      this.past = this.current;
-      this.current = parseInt(this.reference.options[this.reference.selectedIndex].value);
-      console.log(this.current, this.past); // XXX
    }
 }
 

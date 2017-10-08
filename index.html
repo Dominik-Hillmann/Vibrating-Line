@@ -17,9 +17,12 @@
    <body>
       <div>
          <div id="sketch-holder"></div>
-         <input type="checkbox" name="vertLines" id="vertical"><label for="vertical">Vertical Lines</label><br>
+
+         <input type="checkbox" name="vertLines" id="vertical"><label for="vertical">Vertical Lines</label>
+         <br>
          <input type="checkbox" name="horiLines" id="horizontal" checked><label for="horizontal">Horizontal Lines</label>
          <br>
+
          <select name="drag" id="drag">
             <option value="0.05">0.05</option>
             <option value="0.1">0.1</option>
@@ -35,16 +38,18 @@
             <option value="0.6">0.6</option>
             <option value="0.65">0.65</option>
             <option value="0.7">0.7</option>
-            <option value="0.75">0.75</option>
+            <option value="0.75" selected="selected">0.75</option> <!-- value to start with -->
             <option value="0.8">0.8</option>
-            <option value="0.85" selected="selected">0.85</option>
+            <option value="0.85">0.85</option>
             <option value="0.9">0.9</option>
             <option value="0.95">0.95</option>
          </select>
+         <label for="drag">Drag defines the force of the movement/speed of returning to the cursor's y-position.</label>
          <br>
+
          <select name="strength" id="strength">
             <option value="0.05">0.05</option>
-            <option value="0.1">0.1</option>
+            <option value="0.1" selected="selected">0.1</option> <!-- value to start with -->
             <option value="0.15">0.15</option>
             <option value="0.2">0.2</option>
             <option value="0.25">0.25</option>
@@ -59,10 +64,12 @@
             <option value="0.7">0.7</option>
             <option value="0.75">0.75</option>
             <option value="0.8">0.8</option>
-            <option value="0.85" selected="selected">0.85</option>
+            <option value="0.85">0.85</option>
             <option value="0.9">0.9</option>
             <option value="0.95">0.95</option>
          </select>
+         <label for="strength">Strength defines the tension of each parabola.</label>
+
       </div>
    </body>
 </html>

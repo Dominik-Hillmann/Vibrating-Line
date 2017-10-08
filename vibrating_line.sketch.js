@@ -5,9 +5,11 @@ const NUM_PARABOLAS = 10; // each, vertically, and horizontally
 var horiParabolas = [];
 var vertParabolas = [];
 var cursor;
-var dragValue; /*= new MemoryValue(0, 0, document.getElementById("drag"));
-console.log(dragValue.reference);
-var strengthValue = new MemoryValue(0, 0, document.getElementById("strength"));XXX*/
+
+var dragSelect;
+var strengthSelect;
+var drag;
+var strength;
 
 function setup()
 {
@@ -15,14 +17,18 @@ function setup()
    canvas.parent("sketch-holder");
 
    cursor = new Cursor(HEIGHT / 2, HEIGHT / 2, WIDTH / 2, WIDTH / 2);
-   dragValue = new MemoryValue(0, 1, document.getElementById("drag"));
-   strengthValue = new MemoryValue(0, 1, document.getElementById("strength"));
-   //console.log(dragValue.reference.options[dragValue.reference.selectedIndex].value); XXX
+   // variables to reference the two selects
+   dragSelect = document.getElementById("drag");
+   strengthSelect = document.getElementById("strength");
+   // variables that contain actual current chosen value from the select elements
+   drag = dragSelect.options[dragSelect.selectedIndex].value;
+   strength = strengthSelect.options[strengthSelect.selectedIndex].value;
 
+   // helps to set the lines at the correct position
    var heightWidthSetter = evenNum();
    for(var i = 0; i < NUM_PARABOLAS; i++)
    {
-      horiParabolas.push(new HorizontalParabola(0.75, 0.1, (HEIGHT / 2) + heightWidthSetter, 75, 75));
+      horiParabolas.push(new HorizontalParabola(drag, strength, (HEIGHT / 2) + heightWidthSetter, 100, 100));
       // in the case of an even NUM_PARABOLAS, I want on both sode of HEIGHT / 2 the same number of lines
       heightWidthSetter *= -1;
       if(evenNum)
@@ -42,7 +48,7 @@ function setup()
    // loop for vertical parabolas
    for(var i = 0; i < NUM_PARABOLAS; i++)
    {
-      vertParabolas.push(new VerticalParabola(0.75, 0.1, (WIDTH / 2) + heightWidthSetter, 75, 75));
+      vertParabolas.push(new VerticalParabola(drag, strength, (WIDTH / 2) + heightWidthSetter, 100, 100));
       heightWidthSetter *= -1;
       if(evenNum)
       {
@@ -62,22 +68,17 @@ function draw()
    // canvas
    background(0, 0, 0);
    stroke(255, 255, 255);
-   // update all objects' values besides parabola arrays and get current value from drag and strength
    cursor.update();
-   dragValue.update();
-   strengthValue.update();
-
-
-   if((dragValue.past != dragValue.current) || (strengthValue.current != strengthValue.past))
+   // get current values chosen at the select elements
+   drag = dragSelect.options[dragSelect.selectedIndex].value;
+   strength = strengthSelect.options[strengthSelect.selectedIndex].value;
+   // and the new values are assigned to each parabola
+   for(var i = 0; i < NUM_PARABOLAS; i++)
    {
-      console.log("Komme durch");
-      for(var i = 0; i < NUM_PARABOLAS; i++)
-      { //XXX
-         horiParabolas[i].drag = dragValue.current;
-         vertParabolas[i].drag = dragValue.current;
-         horiParabolas[i].strength = strengthValue.current;
-         vertParabolas[i].strength = strengthValue.current;
-      }
+      horiParabolas[i].drag = drag;
+      vertParabolas[i].drag = drag;
+      horiParabolas[i].strength = strength;
+      vertParabolas[i].strength = strength;
    }
 
    // loop horizontal parabolas
@@ -102,18 +103,3 @@ function draw()
       }
    }
 }
-
-/*
-TODO:
-- Schieberegler für drag und strength
-   - Methode für geänderten Drag und Strength, die das entsprechend OHNE Konstruktor tut
-   - .update()-Methode für neuen drag, strength, etc. XXX
-- Cs für größere Fenster herausfinden und diese als Auswahl einbauen XXX
-- vertikale Linien XXX
-   - für an-/ausschalten ein Häkchen, dann if um die Auswertungsfunktionen in .draw XXX
-   - dieses Häkchen wird direkt davor durch DOM abgerufen XXX
-- index.html verschönern
-   - Canvas vergrößern und in die Mitte schieben XXX
-   - Schaltbuttons XXX
-
-*/
