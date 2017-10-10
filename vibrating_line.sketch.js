@@ -28,7 +28,14 @@ function setup()
    var heightWidthSetter = evenNum();
    for(var i = 0; i < NUM_PARABOLAS; i++)
    {
-      horiParabolas.push(new HorizontalParabola(drag, strength, (HEIGHT / 2) + heightWidthSetter, 100, 100));
+      horiParabolas.push(new HorizontalParabola
+      (
+         drag,
+         strength,
+         (HEIGHT / 2) + heightWidthSetter,
+         100,
+         100
+      ));
       // in the case of an even NUM_PARABOLAS, I want on both sode of HEIGHT / 2 the same number of lines
       heightWidthSetter *= -1;
       if(evenNum)
@@ -48,7 +55,15 @@ function setup()
    // loop for vertical parabolas
    for(var i = 0; i < NUM_PARABOLAS; i++)
    {
-      vertParabolas.push(new VerticalParabola(drag, strength, (WIDTH / 2) + heightWidthSetter, 100, 100));
+      vertParabolas.push(new VerticalParabola
+      (
+         drag,
+         strength,
+         (WIDTH / 2) + heightWidthSetter,
+         100,
+         100
+      ));
+      
       heightWidthSetter *= -1;
       if(evenNum)
       {
