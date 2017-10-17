@@ -18,8 +18,8 @@ var Cursor = function(newPosY, newPosX, lastPosY, lastPosX)
    {
       this.last.x = this.now.x;
       this.last.y = this.now.y;
-      this.now.x = mouseX;
-      this.now.y = mouseY;
+      this.now.x = winMouseX;
+      this.now.y = winMouseY;
    }
 }
 
